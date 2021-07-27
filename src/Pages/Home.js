@@ -1,11 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Flex, Stack, Heading } from '@chakra-ui/react'
 import ListingsList from '../Components/Listings/ListingsList'
 
 const Home = () => {
-  const [loggedIn, setLoggedIn] = useState(false)
-  const [isSignUp, setIsSignUp] = useState(false)
-
   return (
     <div>
       <Flex direction='column' mt='50px'>
@@ -25,4 +22,3 @@ const Home = () => {
 }
 
 export default Home
- 

@@ -7,16 +7,11 @@ import {
   Input,
   Checkbox,
   CheckboxGroup,
-  IconButton,
-  TextArea,
   Text,
-  Spacer,
   HStack,
   VStack,
   Stack,
   FormControl,
-  FormLabel,
-  FormErrorMessage,
   FormHelperText,
   Center
 } from '@chakra-ui/react'

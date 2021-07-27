@@ -1,5 +1,6 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useContext } from 'react'
 import { Link } from 'react-router-dom'
+import AuthContext from '../../Store/authContext'
 
 import {
   Box,
@@ -14,13 +15,14 @@ import {
   Flex,
   Spacer
 } from '@chakra-ui/react'
-import Login from '../Profile/Login'
 
 // isLogged in? show logout else show login button
 //login button shows modal with login/sign up options
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const ctx = useContext(AuthContext)
+
 
   return (
     <Fragment>
@@ -42,15 +44,15 @@ const Header = () => {
           <Spacer />
           <Box>
             <Menu>
-              {!isLoggedIn && (
-                <Link to='/account'>
+              {!ctx.isLoggedIn && (
+                <Link to='/authentication'>
                   <MenuButton as={Button} colorScheme='teal'>
                     Login
                   </MenuButton>
                 </Link>
               )}
 
-              {isLoggedIn && (
+              {ctx.isLoggedIn && (
                 <>
                   <MenuButton as={Button} colorScheme='teal'>
                     <Link to='/my-account'>Profile</Link>
