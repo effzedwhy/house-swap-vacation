@@ -9,9 +9,14 @@ import {
   Text
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
+import { useAuth } from '../../Store/authContext'
+import { useHistory } from 'react-router-dom'
 
 const Authentication = () => {
-  const [isLogin, setIsLogin] = useState(false)
+  const [isLogin, setIsLogin] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
+  const { signup, login } = useAuth()
+  const history = useHistory()
 
   const {
     register,
@@ -23,38 +28,28 @@ const Authentication = () => {
     setIsLogin(prevState => !prevState)
   }
 
-  const submitHandler = data => {
-    console.log(data.email)
-
-    if (isLogin) {
+  const submitHandler = async data => {
+    if (!isLogin) {
+      try {
+        setIsLoading(true)
+        await signup(data.email, data.password)
+        history.push('/')
+      } catch {
+        new Error('Something went wrong')
+      }
+      setIsLoading(false)
     } else {
-      fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAYKvfQOUrWlshaSnLOXbpBK5Ei0gh9ZfE',
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            email: data.email,
-            password: data.password,
-            returnSecureToken: true
-          }),
-
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        }
-      ).then(res => {
-        if (res.ok) {
-          //do something
-          console.log('okay!')
-        } else {
-          res.json().then(data => {
-            // error modal
-            console.log(data)
-          })
-        }
-      })
+      try {
+        setIsLoading(true)
+        await login(data.email, data.password)
+        history.push('/my-account')
+      } catch {
+        new Error('Something went wrong')
+      }
+      setIsLoading(false)
     }
   }
+  console.log()
 
   return (
     <Center h='500px'>
@@ -65,6 +60,7 @@ const Authentication = () => {
         borderColor='teal.600'
         borderRadius='md'
         p={12}
+        w='400px'
       >
         <Text as='h1'>{isLogin ? 'Login' : 'Sign Up'}</Text>
         <form onSubmit={handleSubmit(submitHandler)}>
@@ -107,9 +103,15 @@ const Authentication = () => {
             )}
           </FormControl>
           <Flex mt='10px' justifyContent='center'>
-            <Button m={3} colorScheme='teal' type='submit'>
-              {isLogin ? 'Login' : 'Create an account'}
-            </Button>
+            {isLoading ? (
+              <Button m={3} colorScheme='teal' type='submit'>
+                Loading...
+              </Button>
+            ) : (
+              <Button m={3} colorScheme='teal' type='submit'>
+                {isLogin ? 'Login' : 'Create an account'}
+              </Button>
+            )}
 
             <Button
               m={3}

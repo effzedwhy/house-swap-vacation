@@ -1,14 +1,14 @@
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment } from 'react'
 import { Flex, Stack, Heading } from '@chakra-ui/react'
 import Authentication from './Authentication'
-import AuthContext from '../../Store/authContext'
+import { useAuth } from '../../Store/authContext'
 
 const ListingsList = () => {
-  const ctx = useContext(AuthContext)
+  const ctx = useAuth()
 
   return (
     <Fragment>
-      {!ctx.isLoggedIn ? (
+      {!ctx.currentUser ? (
         <Authentication />
       ) : (
         <Flex direction='column' align='center' m={10}>

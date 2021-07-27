@@ -1,6 +1,6 @@
-import React, { Fragment, useContext } from 'react'
-import { Link } from 'react-router-dom'
-import AuthContext from '../../Store/authContext'
+import React, { Fragment } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { useAuth } from '../../Store/authContext'
 
 import {
   Box,
@@ -16,13 +16,14 @@ import {
   Spacer
 } from '@chakra-ui/react'
 
-// isLogged in? show logout else show login button
-//login button shows modal with login/sign up options
-
 const Header = () => {
+  const { currentUser, logout } = useAuth()
+  const history = useHistory()
 
-  const ctx = useContext(AuthContext)
-
+  const logoutHandler = () => {
+    logout()
+    history.push('/')
+  }
 
   return (
     <Fragment>
@@ -44,24 +45,16 @@ const Header = () => {
           <Spacer />
           <Box>
             <Menu>
-              {!ctx.isLoggedIn && (
-                <Link to='/authentication'>
-                  <MenuButton as={Button} colorScheme='teal'>
-                    Login
-                  </MenuButton>
-                </Link>
-              )}
-
-              {ctx.isLoggedIn && (
+              {currentUser && (
                 <>
                   <MenuButton as={Button} colorScheme='teal'>
                     <Link to='/my-account'>Profile</Link>
                   </MenuButton>
-                  <MenuList bg='teal.700' color='white' border='0'>
+                  <MenuList bg='teal.700' border='0' >
                     <MenuGroup title='Profile'>
-                       <Link to='/my-account'><MenuItem>
-                       My Account
-                      </MenuItem></Link>
+                      <Link to='/my-account'>
+                        <MenuItem>My Account</MenuItem>
+                      </Link>
                       <MenuItem>My Favourites</MenuItem>
                       <MenuItem>
                         <Link to='/submit-listing'>List Your Home</Link>
@@ -70,10 +63,28 @@ const Header = () => {
                     <MenuDivider />
                     <MenuGroup>
                       <MenuItem>FAQ</MenuItem>
-                      <MenuItem>Logout</MenuItem>
+                      <MenuItem onClick={logoutHandler}>Logout</MenuItem>
                     </MenuGroup>
                   </MenuList>
                 </>
+              )}
+              {!currentUser ? (
+                <Link to='/authentication'>
+                  <MenuButton as={Button} colorScheme='teal'>
+                    Login
+                  </MenuButton>
+                </Link>
+              ) : (
+                <Link to='/home'>
+                  <MenuButton
+                    as={Button}
+                    ml='10px'
+                    colorScheme='teal'
+                    onClick={logoutHandler}
+                  >
+                    Logout
+                  </MenuButton>
+                </Link>
               )}
             </Menu>
           </Box>
