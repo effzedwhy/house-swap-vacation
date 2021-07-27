@@ -29,7 +29,7 @@ const Authentication = () => {
     if (isLogin) {
     } else {
       fetch(
-        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAYKvfQOUrWlshaSnLOXbpBK5Ei0gh9ZfE',
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaZfE',
         {
           method: 'POST',
           body: JSON.stringify({
