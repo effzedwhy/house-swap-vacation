@@ -8,6 +8,8 @@ import Layout from './Components/UI/Layout'
 import ListingsList from './Components/Listings/ListingsList'
 import MyAccount from './Components/Profile/MyAccount'
 import { AuthProvider } from './Store/authContext'
+import PrivateRoute from './Components/Profile/PrivateRoute'
+import ForgottenPassword from './Components/Profile/ForgottenPassword'
 
 function App () {
   return (
@@ -20,12 +22,13 @@ function App () {
 
             <Route path='/listings' component={ListingsList} />
 
-            <Route path='/submit-listing' component={SubmitListing} />
+            <PrivateRoute path='/submit-listing' component={SubmitListing} />
 
-            <Route path='/my-account' component={MyAccount} />
+            <PrivateRoute path='/my-account' component={MyAccount} />
             <Route exact path='/' component={Home} />
 
             <Route path='/home' component={Home} exact />
+            <Route path='/forgotten-password' component={ForgottenPassword} />
           </Layout>
         </Switch>
       </div>

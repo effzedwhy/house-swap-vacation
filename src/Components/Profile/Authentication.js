@@ -6,11 +6,12 @@ import {
   FormControl,
   FormLabel,
   Center,
-  Text
+  Text,
+  Box
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../../Store/authContext'
-import { useHistory } from 'react-router-dom'
+import { Link, useHistory } from 'react-router-dom'
 
 const Authentication = () => {
   const [isLogin, setIsLogin] = useState(true)
@@ -62,7 +63,15 @@ const Authentication = () => {
         p={12}
         w='400px'
       >
-        <Text as='h1'>{isLogin ? 'Login' : 'Sign Up'}</Text>
+        <Text
+          as='h1'
+          fontSize='20px'
+          fontWeight='700'
+          textAlign='center'
+          mb='10px'
+        >
+          {isLogin ? 'Login' : 'Sign Up'}
+        </Text>
         <form onSubmit={handleSubmit(submitHandler)}>
           <FormControl id='email'>
             <FormLabel>Email address</FormLabel>
@@ -77,7 +86,7 @@ const Authentication = () => {
                 required: true
               })}
               size='sm'
-              w='250px'
+              w='300px'
             />
             {errors.email && <p>This field is required</p>}
           </FormControl>
@@ -96,13 +105,13 @@ const Authentication = () => {
                 min: 6
               })}
               size='sm'
-              w='250px'
+              w='300px'
             />
             {errors.password && (
               <p>Password should be at least 6 characters.</p>
             )}
           </FormControl>
-          <Flex mt='10px' justifyContent='center'>
+          <Flex mt='10px' justifyContent='flex-start'>
             {isLoading ? (
               <Button m={3} colorScheme='teal' type='submit'>
                 Loading...
@@ -122,6 +131,13 @@ const Authentication = () => {
               {isLogin ? 'Create new account' : 'Login'}
             </Button>
           </Flex>
+          {isLogin && (
+            <Box d='flex' justifyContent='center' w='100%'>
+              <Text as='h5'>
+                <Link to='/forgotten-password'>Forgotten Password?</Link>
+              </Text>
+            </Box>
+          )}
         </form>
       </Flex>
     </Center>
