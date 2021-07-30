@@ -11,14 +11,11 @@ import {
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '../../Store/authContext'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 const ForgottenPassword = () => {
-  const [isLogin, setIsLogin] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
-  const { signup, login } = useAuth()
-  const history = useHistory()
-  const ctx = useAuth()
+  const { resetPassword } = useAuth()
 
   const {
     register,
@@ -27,25 +24,14 @@ const ForgottenPassword = () => {
   } = useForm()
 
   const submitHandler = async data => {
-    if (!isLogin) {
-      try {
-        setIsLoading(true)
-        await signup(data.email, data.password)
-        history.push('/')
-      } catch {
-        new Error('Something went wrong')
-      }
-      setIsLoading(false)
-    } else {
-      try {
-        setIsLoading(true)
-        await login(data.email, data.password)
-        history.push('/my-account')
-      } catch {
-        new Error('Something went wrong')
-      }
-      setIsLoading(false)
+    try {
+      setIsLoading(true)
+      await resetPassword(data.email)
+      console.log('done')
+    } catch {
+      new Error('Failed to reset password')
     }
+    setIsLoading(false)
   }
 
   return (
@@ -88,16 +74,22 @@ const ForgottenPassword = () => {
               {errors.email && <p>This field is required</p>}
             </FormControl>
             <Flex justifyContent='center'>
-              <Button m={4} colorScheme='teal' type='submit'>
-                Reset
-              </Button>
+              {!isLoading ? (
+                <Button m={4} colorScheme='teal' type='submit'>
+                  Reset
+                </Button>
+              ) : (
+                <Button m={4} colorScheme='teal'>
+                  Loading...
+                </Button>
+              )}
             </Flex>
           </form>
           <Box d='flex' justifyContent='center' w='100%'>
-            <Link as='h5'>
-              <Link to='/authentication'>Login</Link>
-            </Link>
-          </Box>{' '}
+            <Text textDecoration='underline' as='h5'>
+              <Link to='/authentication'>Login or Sign up</Link>
+            </Text>
+          </Box>
         </Flex>
       </Center>
     </Fragment>

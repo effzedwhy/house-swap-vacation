@@ -113,9 +113,7 @@ const Authentication = () => {
           </FormControl>
           <Flex mt='10px' justifyContent='flex-start'>
             {isLoading ? (
-              <Button m={3} colorScheme='teal' type='submit'>
-                Loading...
-              </Button>
+              <Button m={3} colorScheme='teal' type='submit' isLoading></Button>
             ) : (
               <Button m={3} colorScheme='teal' type='submit'>
                 {isLogin ? 'Login' : 'Create an account'}
@@ -133,7 +131,7 @@ const Authentication = () => {
           </Flex>
           {isLogin && (
             <Box d='flex' justifyContent='center' w='100%'>
-              <Text as='h5'>
+              <Text textDecoration='underline' as='h5'>
                 <Link to='/forgotten-password'>Forgotten Password?</Link>
               </Text>
             </Box>

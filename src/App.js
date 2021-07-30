@@ -25,9 +25,11 @@ function App () {
             <PrivateRoute path='/submit-listing' component={SubmitListing} />
 
             <PrivateRoute path='/my-account' component={MyAccount} />
+
             <Route exact path='/' component={Home} />
 
             <Route path='/home' component={Home} exact />
+            
             <Route path='/forgotten-password' component={ForgottenPassword} />
           </Layout>
         </Switch>
