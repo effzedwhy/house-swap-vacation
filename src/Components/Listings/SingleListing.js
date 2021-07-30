@@ -2,7 +2,7 @@ import React, { Fragment, useEffect, useState } from 'react'
 import { Box, Image, Badge, Flex, Button, Spacer } from '@chakra-ui/react'
 import Firebase from '../../firebase'
 
-const SingleListing = photo => {
+const SingleListing = () => {
   const [newListing, setNewListing] = useState('')
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const SingleListing = photo => {
       .catch(error => {
         new Error('Something went wrong')
       })
-  }, [photo])
+  }, [])
   return (
     <Fragment>
       {Object.keys(newListing).map(id => {

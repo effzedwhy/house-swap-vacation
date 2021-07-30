@@ -438,9 +438,15 @@ const SubmitListing = () => {
                 colorScheme='teal'
                 id='fileItem'
               />
-              <Button mt={10} colorScheme='teal' type='submit'>
-                Submit listing
-              </Button>
+              {isLoading ? (
+                <Button mt={10} colorScheme='teal' type='submit' isLoading>
+                  Submit listing
+                </Button>
+              ) : (
+                <Button mt={10} colorScheme='teal' type='submit'>
+                  Submit listing
+                </Button>
+              )}
               <Button mt={5} colorScheme='teal' variant='outline'>
                 Cancel
               </Button>
