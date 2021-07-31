@@ -21,11 +21,7 @@ import Firebase from '../../firebase'
 const SubmitListing = () => {
   const [isLoading, setIsLoading] = useState(false)
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm()
+  const { register, handleSubmit } = useForm()
 
   const submitHandler = async data => {
     try {
@@ -33,11 +29,8 @@ const SubmitListing = () => {
       setIsLoading(true)
       const file = document.getElementById('fileItem').files[0]
 
-      const metadata = {
-        contentType: 'image/png'
-      }
       const storageRef = Firebase.storage().ref()
-      await storageRef.child(`images/${file.name}`).put(file, metadata)
+      await storageRef.child(`images/${file.name}`).put(file)
 
       await Firebase.database()
         .ref('newListing')
@@ -49,6 +42,9 @@ const SubmitListing = () => {
           city: data.city,
           postcode: data.postcode,
           country: data.country,
+          beds: data.beds,
+          baths: data.baths,
+          toilets: data.toilets,
           living: data.living,
           bathroom: data.bathroom,
           bedroom: data.bedroom,
@@ -410,7 +406,7 @@ const SubmitListing = () => {
                   focusBorderColor='teal.600'
                   border='2px'
                   errorBorderColor='red.600'
-                  placeholder='Dates'
+                  placeholder='Month(s) e.g June, July'
                   {...register('dates')}
                   size='sm'
                   w='250px'

@@ -10,8 +10,9 @@ import MyAccount from './Components/Profile/MyAccount'
 import { AuthProvider } from './Store/authContext'
 import PrivateRoute from './Components/Profile/PrivateRoute'
 import ForgottenPassword from './Components/Profile/ForgottenPassword'
+import Listing from './Pages/Listing'
 
-function App () {
+function App (props) {
   return (
     <AuthProvider>
       <div className='App'>
@@ -22,11 +23,8 @@ function App () {
 
             <Route path='/listings' component={ListingsList} />
 
-            <PrivateRoute
-              path='/submit-listing'
-              component={SubmitListing}
-     
-            />
+            <PrivateRoute path='/submit-listing' component={SubmitListing}  />
+            <Route path='/listing-detail/:id' component={Listing} />
 
             <PrivateRoute path='/my-account' component={MyAccount} />
 

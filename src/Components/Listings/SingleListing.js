@@ -1,7 +1,20 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Box, Image, Badge, Flex, Button, Spacer, Text } from '@chakra-ui/react'
+import {
+  Box,
+  Image,
+  Badge,
+  Flex,
+  Button,
+  Spacer,
+  List,
+  ListItem,
+  ListIcon
+} from '@chakra-ui/react'
+import { CheckCircleIcon } from '@chakra-ui/icons'
 import Firebase from '../../firebase'
 import 'firebase/database'
+import homeImg from '../../assets/homeswap-home-one.jpg'
+import { Link } from 'react-router-dom'
 
 const SingleListing = () => {
   const [newListing, setNewListing] = useState('')
@@ -20,16 +33,18 @@ const SingleListing = () => {
   return (
     <Fragment>
       {Object.keys(newListing).map(id => {
-        const storageRef = Firebase.storage().ref()
-        storageRef
-          .child(`images/${newListing[id].photo}`)
-          .getDownloadURL()
-          .then(url => {
-            const imgs = document.getElementById('property')
-            imgs.setAttribute('src', url)
-            console.log(url, newListing[id])
-          })
-
+        if (newListing[id].photo) {
+          const storageRef = Firebase.storage().ref()
+          console.log(newListing[id].photo)
+          storageRef
+            .child(`images/${newListing[id].photo}`)
+            .getDownloadURL()
+            .then(url => {
+              const imgs = document.getElementById(`property${id}`)
+              imgs.setAttribute('src', url)
+            })
+        }
+        const moreDetailLink = `/listing-detail/${id}`
         return (
           <Flex
             w='900px'
@@ -38,9 +53,16 @@ const SingleListing = () => {
             borderRadius='lg'
             overflow='hidden'
             shadow='md'
+            color='gray.500'
           >
-            <Image id='property' alt='property' maxH='200px' key={id} />
-
+            <Image
+              id={`property${id}`}
+              alt='property'
+              maxH='220px'
+              maxW='300px'
+              fallbackSrc={homeImg}
+            />
+            <Spacer />
             <Flex p='6' direction='column' w='600px'>
               <Box d='flex' alignItems='baseline'>
                 <Badge borderRadius='full' px='2' colorScheme='teal'>
@@ -58,7 +80,6 @@ const SingleListing = () => {
                 </Box>
               </Box>
               <Box
-                color='gray.500'
                 fontWeight='semibold'
                 letterSpacing='wide'
                 fontSize='xs'
@@ -66,24 +87,46 @@ const SingleListing = () => {
                 mt='2'
                 d='flex'
               >
-                {newListing[id].general}
+                <List d='flex' alignItems='center' isTruncated maxW='500px'>
+                  {newListing[id].kitchen.map(a =>
+                    a !== false ? (
+                      <ListItem mr='25px' d='flex' alignItems='center'>
+                        <ListIcon as={CheckCircleIcon} color='teal.500' />
+                        {a}
+                      </ListItem>
+                    ) : null
+                  )}
+                </List>
               </Box>
               <Box
-                color='gray.500'
                 fontWeight='semibold'
                 letterSpacing='wide'
                 fontSize='xs'
                 textTransform='uppercase'
                 mt='2'
-                d='flex'
               >
-                {newListing[id].bathroom}
+                <List d='flex' alignItems='center' isTruncated maxW='500px'>
+                  {newListing[id].general.map(a =>
+                    a !== false ? (
+                      <ListItem
+                        mr='25px'
+                        d='flex'
+                        alignItems='center'
+                        isTruncated
+                      >
+                        <ListIcon as={CheckCircleIcon} color='teal.500' />
+                        {a}
+                      </ListItem>
+                    ) : null
+                  )}
+                </List>
               </Box>
-              <Box fontSize='sm'>
-                {newListing[id].city},{newListing[id].country}
+              <Box fontSize='md' mt='5px'>
+                Location: &nbsp; {newListing[id].city},&nbsp;
+                {newListing[id].country}
               </Box>
               <Spacer />
-              <Box>{newListing[id].dates}</Box>
+              <Box>Dates available:&nbsp; {newListing[id].dates}</Box>
               <Box>
                 <Button
                   as='span'
@@ -93,7 +136,9 @@ const SingleListing = () => {
                   size='sm'
                   w='100%'
                 >
-                  More details
+                  <Link to={moreDetailLink} id={id}>
+                    More details
+                  </Link>
                 </Button>
               </Box>
             </Flex>
