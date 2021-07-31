@@ -38,9 +38,8 @@ const SingleListing = () => {
             borderRadius='lg'
             overflow='hidden'
             shadow='md'
-            key={id}
           >
-            <Image id='property' alt='property' maxH='200px' />
+            <Image id='property' alt='property' maxH='200px' key={id} />
 
             <Flex p='6' direction='column' w='600px'>
               <Box d='flex' alignItems='baseline'>

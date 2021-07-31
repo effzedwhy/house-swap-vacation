@@ -19,22 +19,7 @@ import { useForm } from 'react-hook-form'
 import Firebase from '../../firebase'
 
 const SubmitListing = () => {
-  const [name, setName] = useState('')
-  const [surname, setSurname] = useState('')
-  const [address1, setAddress1] = useState('')
-  const [address2, setAddress2] = useState('')
-  const [city, setCity] = useState('')
-  const [postcode, setPostcode] = useState('')
-  const [country, setCountry] = useState('')
-  const [living, setLiving] = useState({})
-  const [bathroom, setBathroom] = useState({})
-  const [bedroom, setBedroom] = useState({})
-  const [kitchen, setKitchen] = useState({})
-  const [general, setGeneral] = useState({})
-  const [outside, setOutside] = useState({})
-  const [dates, setDates] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [photo, setPhoto] = useState('')
 
   const {
     register,
@@ -42,51 +27,40 @@ const SubmitListing = () => {
     formState: { errors }
   } = useForm()
 
-  const submitHandler = data => {
-    setName(data.firstName)
-    setSurname(data.surname)
-    setAddress1(data.address1)
-    setAddress2(data.address2)
-    setCity(data.city)
-    setPostcode(data.postcode)
-    setCountry(data.country)
-    setDates(data.dates)
-    setLiving(data.living)
-    setBathroom(data.bathroom)
-    setBedroom(data.bedroom)
-    setKitchen(data.kitchen)
-    setGeneral(data.general)
-    setOutside(data.outside)
-
+  const submitHandler = async data => {
     try {
+      console.log('start')
       setIsLoading(true)
-      const submitListingRef = Firebase.database().ref('newListing')
-      const listing = {
-        name,
-        surname,
-        address1,
-        address2,
-        city,
-        postcode,
-        country,
-        living,
-        bathroom,
-        bedroom,
-        kitchen,
-        general,
-        outside,
-        dates,
-        photo
-      }
-      submitListingRef.push(listing)
       const file = document.getElementById('fileItem').files[0]
 
       const metadata = {
         contentType: 'image/png'
       }
       const storageRef = Firebase.storage().ref()
-      storageRef.child(`images/${file.name}`).put(file, metadata)
-      setPhoto(file.name)
+      await storageRef.child(`images/${file.name}`).put(file, metadata)
+
+      await Firebase.database()
+        .ref('newListing')
+        .push({
+          name: data.firstName,
+          surname: data.surname,
+          adddress1: data.address1,
+          address2: data.address2,
+          city: data.city,
+          postcode: data.postcode,
+          country: data.country,
+          living: data.living,
+          bathroom: data.bathroom,
+          bedroom: data.bedroom,
+          kitchen: data.kitchen,
+          general: data.general,
+          outside: data.outside,
+          dates: data.dates,
+          photo: file.name
+        })
+
+      console.log('done')
+
       setIsLoading(false)
     } catch {
       new Error('Something went wrong')
@@ -96,7 +70,7 @@ const SubmitListing = () => {
   return (
     <Fragment>
       <Center w='1000px' m='auto' mt='100px' mb='200px'>
-        <form onSubmit={handleSubmit(submitHandler)}>
+        <form onSubmit={handleSubmit(submitHandler)} autoComplete='true'>
           <FormControl>
             <Heading as='h1' fontSize='xl'>
               Submit a listing for your home
