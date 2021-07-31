@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect, useState } from 'react'
-import { Box, Image, Badge, Flex, Button, Spacer } from '@chakra-ui/react'
+import { Box, Image, Badge, Flex, Button, Spacer, Text } from '@chakra-ui/react'
 import Firebase from '../../firebase'
+import 'firebase/database'
 
 const SingleListing = () => {
   const [newListing, setNewListing] = useState('')
@@ -14,23 +15,21 @@ const SingleListing = () => {
             ...snapshot.val()
           })
       })
-
-    const storageRef = Firebase.storage().ref()
-    storageRef
-      .child(`images/`)
-      .getDownloadURL()
-      .then(url => {
-        const img = document.getElementById('property')
-        img.setAttribute('src', url)
-        console.log(url)
-      })
-      .catch(error => {
-        new Error('Something went wrong')
-      })
   }, [])
+
   return (
     <Fragment>
       {Object.keys(newListing).map(id => {
+        const storageRef = Firebase.storage().ref()
+        storageRef
+          .child(`images/${newListing[id].photo}`)
+          .getDownloadURL()
+          .then(url => {
+            const imgs = document.getElementById('property')
+            imgs.setAttribute('src', url)
+            console.log(url, newListing[id])
+          })
+
         return (
           <Flex
             w='900px'
@@ -59,7 +58,7 @@ const SingleListing = () => {
                   {newListing[id].beds} beds &bull; {newListing[id].baths} baths
                 </Box>
               </Box>
-              {/* <Box
+              <Box
                 color='gray.500'
                 fontWeight='semibold'
                 letterSpacing='wide'
@@ -68,16 +67,9 @@ const SingleListing = () => {
                 mt='2'
                 d='flex'
               >
-                {newListing[id].general.map(
-                  a =>
-                    a !== false && (
-                      <Box>
-                        <Text>{a} &bull;&nbsp;</Text>
-                      </Box>
-                    )
-                )}
-              </Box> */}
-              {/* <Box
+                {newListing[id].general}
+              </Box>
+              <Box
                 color='gray.500'
                 fontWeight='semibold'
                 letterSpacing='wide'
@@ -86,15 +78,8 @@ const SingleListing = () => {
                 mt='2'
                 d='flex'
               >
-                {newListing[id].bathroom.map(
-                  a =>
-                    a !== false && (
-                      <Box>
-                        <Text>{a} &bull;&nbsp;</Text>
-                      </Box>
-                    )
-                )}
-              </Box> */}
+                {newListing[id].bathroom}
+              </Box>
               <Box fontSize='sm'>
                 {newListing[id].city},{newListing[id].country}
               </Box>

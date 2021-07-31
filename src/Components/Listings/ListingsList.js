@@ -7,7 +7,7 @@ const ListingsList = () => {
     <Fragment>
       <Flex direction='column' align='center' m={10}>
         <Stack spacing={4}>
-          <SingleListing />
+       <SingleListing />
         </Stack>
       </Flex>
     </Fragment>
