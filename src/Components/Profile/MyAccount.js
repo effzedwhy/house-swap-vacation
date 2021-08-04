@@ -1,24 +1,28 @@
 import React, { Fragment } from 'react'
 import { Flex, Stack, Heading, Text } from '@chakra-ui/react'
 import { useAuth } from '../../Store/authContext'
-import { usePhotos } from '../../Hooks/usePhotos'
 import { useAllData } from '../../Hooks/useData'
-import ListingCard from '../UI/ListingCard'
+import { useQuery } from 'react-query'
+import UserListing from '../Listings/UserListing'
 
- const ListingsList =  () => {
-  const listing = useAllData()
+const ListingsList = () => {
   const { uid, currentUser } = useAuth()
   let id = ''
 
-  Object.keys(listing).map(a => (listing[a].uid === uid ? (id = a) : null))
+  // Get listing based on matching UID
 
-  usePhotos(listing[id].photo, id)
+  const { data, status } = useQuery('data', useAllData)
 
-  const button = { label: 'Edit' }
+  if (data) {
+    Object.keys(data).map(a =>
+      data[a].uid === uid ? (id = a) : <Text>No listing</Text>
+    )
+  }
 
   return (
     <Fragment>
-      <Flex direction='column' align='center' m={10}>
+      <Flex direction='column' align='left' m={10} ml='180px'>
+        {status !== 'success' && status}
         <Stack spacing={4}>
           <Heading as='h1'>Profile</Heading>
           <Heading as='h2' size='md'>
@@ -26,20 +30,23 @@ import ListingCard from '../UI/ListingCard'
           </Heading>
           <Text>{currentUser.email}</Text>
           <Heading as='h2' size='md'>
-            Your listing
+            Your data
           </Heading>
-          {id && (
-            <ListingCard
+          {id ? (
+            <UserListing
               id={id}
-              baths={listing[id].baths}
-              bed={listing[id].beds}
-              kitchen={listing[id].kitchen}
-              general={listing[id].general}
-              city={listing[id].city}
-              country={listing[id].country}
-              dates={listing[id].dates}
-              button={button}
+              key={id}
+              baths={data[id].baths}
+              bed={data[id].beds}
+              kitchen={data[id].kitchen}
+              general={data[id].general}
+              city={data[id].city}
+              country={data[id].country}
+              dates={data[id].dates}
+              data={data}
             />
+          ) : (
+            <Text>No listing</Text>
           )}
         </Stack>
       </Flex>

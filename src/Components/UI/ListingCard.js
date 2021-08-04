@@ -14,6 +14,8 @@ import {
 import homeImg from '../../assets/homeswap-home-one.jpg'
 import { CheckCircleIcon } from '@chakra-ui/icons'
 import { Link } from 'react-router-dom'
+import 'firebase/storage'
+import Firebase from '../../firebase'
 
 const ListingCard = ({
   id,
@@ -24,7 +26,10 @@ const ListingCard = ({
   city,
   country,
   dates,
-   button
+  link,
+  photos,
+  data,
+  button
 }) => (
   <Fragment>
     <Flex
@@ -35,16 +40,27 @@ const ListingCard = ({
       overflow='hidden'
       shadow='md'
       color='gray.500'
-      key={`${id}`}
     >
+      {Object.keys(data).map(photoID => {
+        if (data[photoID].photo === data[id].photo) {
+          Firebase.storage()
+            .ref()
+            .child('images/' + data[id].photo)
+            .getDownloadURL()
+            .then(url => {
+              const img = document.querySelector(`#property${id}`)
+              img.setAttribute('src', url)
+            })
+        }
+      })}
       <Image
         id={`property${id}`}
         alt='property'
         maxH='220px'
         maxW='300px'
+        src={photos}
         fallbackSrc={homeImg}
       />
-
       <Spacer />
       <Flex p='6' direction='column' w='600px'>
         <Box d='flex' alignItems='baseline'>
@@ -108,7 +124,7 @@ const ListingCard = ({
         <Spacer />
         <Box>Dates available:&nbsp; {dates}</Box>
         <Box>
-          <Link to={button}>
+          <Link to={button.link}>
             <Button
               as='span'
               mt={2}

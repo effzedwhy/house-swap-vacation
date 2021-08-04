@@ -2,35 +2,45 @@ import React, { Fragment } from 'react'
 import { Flex, Stack } from '@chakra-ui/react'
 import SingleListing from './SingleListing'
 import { useAllData } from '../../Hooks/useData'
+import { useQuery } from 'react-query'
 
 const Listing = () => {
-  const listing = useAllData()
+  const { isLoading, isError, data, error } = useQuery('alldata', useAllData)
 
+  if (isLoading) {
+    return <span>Loading...</span>
+  }
+
+  if (isError) {
+    return <span>Error: {error.message}</span>
+  }
+  console.log(data)
   return (
     <Fragment>
       <Flex direction='column' align='center' m={10}>
         <Stack spacing={4}>
-          {Object.keys(listing).map(id => {
+          {Object.keys(data).map(id => {
             return (
-            <SingleListing
-              id={id}
-              key={id}
-              beds={listing[id].beds}
-              baths={listing[id].baths}
-              toilets={listing[id].toilets}
-              living={listing[id].living}
-              bedroom={listing[id].bedroom}
-              bathroom={listing[id].bathroom}
-              general={listing[id].general}
-              kitchen={listing[id].kitchen}
-              outside={listing[id].outside}
-              photo={listing[id].photo}
-              city={listing[id].city}
-              country={listing[id].country}
-              dates={listing[id].dates}
-              photos={listing[id].photo}
-            />
-          )})}
+              <SingleListing
+                id={id}
+                key={id}
+                beds={data[id].beds}
+                baths={data[id].baths}
+                toilets={data[id].toilets}
+                living={data[id].living}
+                bedroom={data[id].bedroom}
+                bathroom={data[id].bathroom}
+                general={data[id].general}
+                kitchen={data[id].kitchen}
+                outside={data[id].outside}
+                photo={data[id].photo}
+                city={data[id].city}
+                country={data[id].country}
+                dates={data[id].dates}
+                data={data}
+              />
+            )
+          })}
         </Stack>
       </Flex>
     </Fragment>

@@ -1,42 +1,35 @@
 import React, { Fragment } from 'react'
-import 'firebase/storage'
 import ListingCard from '../UI/ListingCard'
 
-const SingleListing = props => {
-  const {
-    id,
-    baths,
-    beds,
-    kitchen,
-    general,
-    city,
-    country,
-    dates,
-    photos,
-    data
-  } = props
-
-
-  const button = { label: 'More Details', link: '/listing-detail/' + id }
+const UserListing = ({
+  id,
+  baths,
+  beds,
+  kitchen,
+  general,
+  city,
+  country,
+  dates,
+  data
+}) => {
+  const button = { label: 'Edit', link: './edit-my-listing' }
 
   return (
     <Fragment>
       <ListingCard
         id={id}
+        key={id}
         baths={baths}
-        beds={beds}
+        bed={beds}
         kitchen={kitchen}
         general={general}
         city={city}
         country={country}
         dates={dates}
         button={button}
-        key={id}
-        photos={photos}
         data={data}
       />
     </Fragment>
   )
 }
-
-export default SingleListing
+export default UserListing

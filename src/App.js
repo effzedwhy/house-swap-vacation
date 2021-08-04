@@ -11,31 +11,36 @@ import { AuthProvider } from './Store/authContext'
 import PrivateRoute from './Components/Profile/PrivateRoute'
 import ForgottenPassword from './Components/Profile/ForgottenPassword'
 import Listing from './Pages/Listing'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
 function App () {
+  const queryClient = new QueryClient()
+
   return (
     <AuthProvider>
-      <div className='App'>
-        <CSSReset />
-        <Switch>
-          <Layout>
-            <Route path='/authentication' component={Authentication} />
+      <QueryClientProvider client={queryClient}>
+        <div className='App'>
+          <CSSReset />
+          <Switch>
+            <Layout>
+              <Route path='/authentication' component={Authentication} />
 
-            <Route path='/listings' component={List} />
+              <Route path='/listings' component={List} />
 
-            <PrivateRoute path='/submit-listing' component={SubmitListing} />
-            <Route path='/listing-detail/:id' component={Listing} />
+              <PrivateRoute path='/submit-listing' component={SubmitListing} />
+              <Route path='/listing-detail/:id' component={Listing} />
 
-            <PrivateRoute path='/my-account' component={MyAccount} />
+              <PrivateRoute path='/my-account' component={MyAccount} />
 
-            <Route exact path='/' component={Home} />
+              <Route exact path='/' component={Home} />
 
-            <Route path='/home' component={Home} exact />
+              <Route path='/home' component={Home} exact />
 
-            <Route path='/forgotten-password' component={ForgottenPassword} />
-          </Layout>
-        </Switch>
-      </div>
+              <Route path='/forgotten-password' component={ForgottenPassword} />
+            </Layout>
+          </Switch>
+        </div>
+      </QueryClientProvider>
     </AuthProvider>
   )
 }

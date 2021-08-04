@@ -1,13 +1,18 @@
 import Firebase from '../firebase'
 import 'firebase/storage'
+import { useQuery } from 'react-query'
 
-export function usePhotos (photos, id) {
-  Firebase.storage()
-    .ref()
-    .child('images/' + photos)
-    .getDownloadURL()
-    .then(url => {
-      const img = document.querySelector(`#property${id}`)
-      return img.setAttribute('src', url)
-    })
+export function useIDPhoto (photo) {
+  const { isLoading, error, data } = useQuery('photo', () =>
+    Firebase.storage()
+      .ref()
+      .child('images/' + `${photo}`)
+      .getDownloadURL()
+  )
+  if (isLoading) return 'Loading...'
+
+  if (error) return 'An error has occurred: ' + error.message
+console.log(data)
+  return data
+
 }

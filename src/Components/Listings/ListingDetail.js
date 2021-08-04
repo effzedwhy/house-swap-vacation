@@ -17,20 +17,21 @@ import 'react-slideshow-image/dist/styles.css'
 import { useAllData } from '../../Hooks/useData'
 import 'firebase/storage'
 import Firebase from '../../firebase'
+import { useQuery } from 'react-query'
 
 const ListingDetail = () => {
-  const listing = useAllData()
+  const { data, status } = useQuery('data', useAllData)
   const params = useParams()
   const ID = params.id
-  console.log(listing)
+  console.log(data)
 
   return (
     <Fragment>
-      {Object.keys(listing).map(id => {
+      {Object.keys(data).map(id => {
         if (id === ID) {
           Firebase.storage()
             .ref()
-            .child('images/' + listing[id].photo)
+            .child('images/' + data[id].photo)
             .getDownloadURL()
             .then(url => {
               const img = document.querySelector('#property')
@@ -38,6 +39,7 @@ const ListingDetail = () => {
             })
           return (
             <>
+              {status !== 'success' && status}
               <Link to='/home'>
                 <Button>Back</Button>
               </Link>
@@ -70,8 +72,8 @@ const ListingDetail = () => {
                       fontSize='xs'
                       textTransform='uppercase'
                     >
-                      {listing[id].beds} beds &bull; {listing[id].baths} baths
-                      &bull; {listing[id].toilets} toilets
+                      {data[id].beds} beds &bull; {data[id].baths} baths
+                      &bull; {data[id].toilets} toilets
                     </Box>
                   </Box>
                   <Box
@@ -82,7 +84,7 @@ const ListingDetail = () => {
                     mt='2'
                   >
                     <List d='flex' alignItems='center'>
-                      {listing[id].living.map(a =>
+                      {data[id].living.map(a =>
                         a !== false ? (
                           <ListItem
                             mr='25px'
@@ -107,7 +109,7 @@ const ListingDetail = () => {
                     d='flex'
                   >
                     <List d='flex' alignItems='center'>
-                      {listing[id].kitchen.map(a =>
+                      {data[id].kitchen.map(a =>
                         a !== false ? (
                           <ListItem mr='25px' d='flex' alignItems='center'>
                             <ListIcon as={CheckCircleIcon} color='teal.500' />
@@ -125,7 +127,7 @@ const ListingDetail = () => {
                     mt='2'
                   >
                     <List d='flex' alignItems='center'>
-                      {listing[id].bedroom.map(a =>
+                      {data[id].bedroom.map(a =>
                         a !== false ? (
                           <ListItem
                             mr='25px'
@@ -148,7 +150,7 @@ const ListingDetail = () => {
                     mt='2'
                   >
                     <List d='flex' alignItems='center'>
-                      {listing[id].bathroom.map(a =>
+                      {data[id].bathroom.map(a =>
                         a !== false ? (
                           <ListItem
                             mr='25px'
@@ -171,7 +173,7 @@ const ListingDetail = () => {
                     mt='2'
                   >
                     <List d='flex' alignItems='center'>
-                      {listing[id].general.map(a =>
+                      {data[id].general.map(a =>
                         a !== false ? (
                           <ListItem
                             mr='25px'
@@ -195,7 +197,7 @@ const ListingDetail = () => {
                     mb='20px'
                   >
                     <List d='flex' alignItems='center'>
-                      {listing[id].outside.map(a =>
+                      {data[id].outside.map(a =>
                         a !== false ? (
                           <ListItem
                             mr='25px'
@@ -212,11 +214,11 @@ const ListingDetail = () => {
                   </Box>
 
                   <Box fontSize='md' mt='5px'>
-                    Location: &nbsp; {listing[id].city},&nbsp;
-                    {listing[id].country}
+                    Location: &nbsp; {data[id].city},&nbsp;
+                    {data[id].country}
                   </Box>
                   <Spacer />
-                  <Box>Dates available:&nbsp; {listing[id].dates}</Box>
+                  <Box>Dates available:&nbsp; {data[id].dates}</Box>
                   <Box>
                     <Button
                       as='span'

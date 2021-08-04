@@ -18,11 +18,13 @@ import {
 import { useForm } from 'react-hook-form'
 import Firebase from '../../firebase'
 import { useAuth } from '../../Store/authContext'
+import { useHistory } from 'react-router'
 
 const SubmitListing = () => {
   const [isLoading, setIsLoading] = useState(false)
   const { register, handleSubmit } = useForm()
   const { uid } = useAuth()
+  const history = useHistory()
 
   const submitHandler = async data => {
     try {
@@ -44,7 +46,7 @@ const SubmitListing = () => {
           uid: uid,
           name: data.firstName,
           surname: data.surname,
-          adddress1: data.address1,
+          address1: data.address1,
           address2: data.address2,
           city: data.city,
           postcode: data.postcode,
@@ -65,6 +67,7 @@ const SubmitListing = () => {
       console.log('done')
 
       setIsLoading(false)
+      history.push('/my-account')
     } catch {
       new Error('Something went wrong')
     }
@@ -73,7 +76,7 @@ const SubmitListing = () => {
   return (
     <Fragment>
       <Center w='1000px' m='auto' mt='100px' mb='200px'>
-        <form onSubmit={handleSubmit(submitHandler)} autoComplete='true'>
+        <form onSubmit={handleSubmit(submitHandler)} autoComplete='on'>
           <FormControl>
             <Heading as='h1' fontSize='xl'>
               Submit a listing for your home
@@ -324,7 +327,7 @@ const SubmitListing = () => {
                         value='cookingbasics'
                         {...register('kitchen.3')}
                       >
-                        Cooking Basic: pots & pans
+                        Cooking Basics
                       </Checkbox>
                       <Checkbox
                         value='crockeryCutlery'
