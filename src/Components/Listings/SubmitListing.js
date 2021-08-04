@@ -17,24 +17,31 @@ import {
 } from '@chakra-ui/react'
 import { useForm } from 'react-hook-form'
 import Firebase from '../../firebase'
+import { useAuth } from '../../Store/authContext'
 
 const SubmitListing = () => {
   const [isLoading, setIsLoading] = useState(false)
-
   const { register, handleSubmit } = useForm()
+  const { uid } = useAuth()
 
   const submitHandler = async data => {
     try {
       console.log('start')
       setIsLoading(true)
-      const file = document.getElementById('fileItem').files[0]
 
-      const storageRef = Firebase.storage().ref()
-      await storageRef.child(`images/${file.name}`).put(file)
+      const photos = []
+      const file = document.getElementById('fileItem').files
+
+      for (let i = 0; i < file.length; i++) {
+        const storageRef = Firebase.storage().ref()
+        await storageRef.child(`images/${file[i].name}`).put(file[i])
+        photos.push(file[i].name)
+      }
 
       await Firebase.database()
         .ref('newListing')
         .push({
+          uid: uid,
           name: data.firstName,
           surname: data.surname,
           adddress1: data.address1,
@@ -52,7 +59,7 @@ const SubmitListing = () => {
           general: data.general,
           outside: data.outside,
           dates: data.dates,
-          photo: file.name
+          photo: photos
         })
 
       console.log('done')
@@ -91,7 +98,7 @@ const SubmitListing = () => {
                 />
                 <Text m={1} ml='10px'>
                   Surname:
-                </Text>{' '}
+                </Text>
                 <Flex direction='column'>
                   <Input
                     type='text'
@@ -421,6 +428,7 @@ const SubmitListing = () => {
                   pt='5px'
                   colorScheme='teal'
                   id='fileItem'
+                  multiple
                 />
                 {isLoading ? (
                   <Button mt={10} colorScheme='teal' type='submit' isLoading>

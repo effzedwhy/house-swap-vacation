@@ -48,21 +48,26 @@ const Header = () => {
               {currentUser && (
                 <>
                   <MenuButton as={Button} colorScheme='teal'>
-                    <Link to='/my-account'>Profile</Link>
+                    Profile
                   </MenuButton>
-                  <MenuList bg='teal.700' border='0' >
+
+                  <MenuList bg='teal.700' border='0'>
                     <MenuGroup title='Profile'>
                       <Link to='/my-account'>
                         <MenuItem>My Account</MenuItem>
                       </Link>
+
                       <MenuItem>My Favourites</MenuItem>
-                      <MenuItem>
-                        <Link to='/submit-listing'>List Your Home</Link>
-                      </MenuItem>
+
+                      <Link to='/submit-listing'>
+                        <MenuItem>List Your Home</MenuItem>
+                      </Link>
                     </MenuGroup>
                     <MenuDivider />
+
                     <MenuGroup>
                       <MenuItem>FAQ</MenuItem>
+
                       <MenuItem onClick={logoutHandler}>Logout</MenuItem>
                     </MenuGroup>
                   </MenuList>

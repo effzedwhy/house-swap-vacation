@@ -1,149 +1,240 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import Firebase from '../../firebase'
+import React, { Fragment } from 'react'
 import {
   Box,
-  Image,
-  Badge,
   Flex,
   Button,
   Spacer,
   List,
   ListItem,
-  ListIcon
+  ListIcon,
+  Image
 } from '@chakra-ui/react'
 import { CheckCircleIcon } from '@chakra-ui/icons'
-import { useParams } from 'react-router-dom'
+import 'firebase/database'
+import homeImg from '../../assets/homeswap-home-one.jpg'
+import { Link, useParams } from 'react-router-dom'
+import 'react-slideshow-image/dist/styles.css'
+import { useAllData } from '../../Hooks/useData'
+import 'firebase/storage'
+import Firebase from '../../firebase'
 
 const ListingDetail = () => {
-  const [thisListing, setThisListing] = useState('')
+  const listing = useAllData()
   const params = useParams()
-
-  const id = params.id
-
-  console.log(params.id)
-
-  useEffect(() => {
-    Firebase.database()
-      .ref('newListing')
-      .on('value', snapshot => {
-        if (snapshot.val())
-          setThisListing({
-            ...snapshot.val()
-          })
-      })
-  }, [])
-
-  const {
-    firstName,
-    surname,
-    beds,
-    baths,
-    dates,
-    toilets,
-    city,
-    country,
-    living,
-    bedroom,
-    bathroom,
-    general,
-    outside,
-    kitchen,
-    photo
-  } = thisListing[id]
-
-  // const storageRef = Firebase.storage().ref()
-  // console.log(photo)
-  // storageRef
-  //   .child(`images/${photo}`)
-  //   .getDownloadURL()
-  //   .then(url => {
-  //     const imgs = document.getElementById(`property[id]`)
-  //     imgs.setAttribute('src', url)
-  //   })
+  const ID = params.id
+  console.log(listing)
 
   return (
     <Fragment>
-      <Flex
-        w='900px'
-        h='1600px'
-        borderWidth='1px'
-        borderRadius='lg'
-        overflow='hidden'
-        shadow='md'
-        color='gray.500'
-      >
-        <Image
-          id={`property[id]`}
-          alt='property'
-          maxH='220px'
-          maxW='300px'
-          //   fallbackSrc={homeImg}
-        />
-        <Spacer />
-        <Flex p='6' direction='column' w='600px'>
-          <Box d='flex' alignItems='baseline'>
-            <Badge borderRadius='full' px='2' colorScheme='teal'>
-              New
-            </Badge>
-            <Box
-              color='gray.500'
-              fontWeight='semibold'
-              letterSpacing='wide'
-              fontSize='xs'
-              textTransform='uppercase'
-              ml='2'
-            >
-              {beds} beds &bull; {baths} baths
-            </Box>
-          </Box>
-          <Box
-            fontWeight='semibold'
-            letterSpacing='wide'
-            fontSize='xs'
-            textTransform='uppercase'
-            mt='2'
-            d='flex'
-          >
-            {/* <List d='flex' alignItems='center' isTruncated maxW='500px'>
-              {kitchen.map(a =>
-                a !== false ? (
-                  <ListItem mr='25px' d='flex' alignItems='center'>
-                    <ListIcon as={CheckCircleIcon} color='teal.500' />
-                    {a}
-                  </ListItem>
-                ) : null
-              )}
-            </List>
-          </Box>
-          <Box
-            fontWeight='semibold'
-            letterSpacing='wide'
-            fontSize='xs'
-            textTransform='uppercase'
-            mt='2'
-          >
-            <List d='flex' alignItems='center' isTruncated maxW='500px'>
-              {general.map(a =>
-                a !== false ? (
-                  <ListItem mr='25px' d='flex' alignItems='center' isTruncated>
-                    <ListIcon as={CheckCircleIcon} color='teal.500' />
-                    {a}
-                  </ListItem>
-                ) : null
-              )}
-            </List> */}
-          </Box>
-          <Box fontSize='md' mt='5px'>
-            Location: &nbsp; {city},&nbsp;
-            {country}
-          </Box>
-          <Spacer />
-          <Box>Dates available:&nbsp; {dates}</Box>
-          <Box>
-        
-          </Box>
-        </Flex>
-      </Flex>
+      {Object.keys(listing).map(id => {
+        if (id === ID) {
+          Firebase.storage()
+            .ref()
+            .child('images/' + listing[id].photo)
+            .getDownloadURL()
+            .then(url => {
+              const img = document.querySelector('#property')
+              img.setAttribute('src', url)
+            })
+          return (
+            <>
+              <Link to='/home'>
+                <Button>Back</Button>
+              </Link>
+
+              <Flex
+                w='900px'
+                H='1000px'
+                borderWidth='1px'
+                borderRadius='lg'
+                overflow='hidden'
+                shadow='md'
+                color='gray.500'
+                key={id}
+                direction='column'
+              >
+                <Image
+                  fallbackSrc={homeImg}
+                  alt='home'
+                  id='property'
+                  maxW='900px'
+                />
+
+                <Spacer />
+                <Flex p='6' direction='column'>
+                  <Box d='flex' alignItems='baseline'>
+                    <Box
+                      color='gray.500'
+                      fontWeight='semibold'
+                      letterSpacing='wide'
+                      fontSize='xs'
+                      textTransform='uppercase'
+                    >
+                      {listing[id].beds} beds &bull; {listing[id].baths} baths
+                      &bull; {listing[id].toilets} toilets
+                    </Box>
+                  </Box>
+                  <Box
+                    fontWeight='semibold'
+                    letterSpacing='wide'
+                    fontSize='xs'
+                    textTransform='uppercase'
+                    mt='2'
+                  >
+                    <List d='flex' alignItems='center'>
+                      {listing[id].living.map(a =>
+                        a !== false ? (
+                          <ListItem
+                            mr='25px'
+                            d='flex'
+                            alignItems='center'
+                            isTruncated
+                          >
+                            <ListIcon as={CheckCircleIcon} color='teal.500' />
+                            {a}
+                          </ListItem>
+                        ) : null
+                      )}
+                    </List>
+                  </Box>
+
+                  <Box
+                    fontWeight='semibold'
+                    letterSpacing='wide'
+                    fontSize='xs'
+                    textTransform='uppercase'
+                    mt='2'
+                    d='flex'
+                  >
+                    <List d='flex' alignItems='center'>
+                      {listing[id].kitchen.map(a =>
+                        a !== false ? (
+                          <ListItem mr='25px' d='flex' alignItems='center'>
+                            <ListIcon as={CheckCircleIcon} color='teal.500' />
+                            {a}
+                          </ListItem>
+                        ) : null
+                      )}
+                    </List>
+                  </Box>
+                  <Box
+                    fontWeight='semibold'
+                    letterSpacing='wide'
+                    fontSize='xs'
+                    textTransform='uppercase'
+                    mt='2'
+                  >
+                    <List d='flex' alignItems='center'>
+                      {listing[id].bedroom.map(a =>
+                        a !== false ? (
+                          <ListItem
+                            mr='25px'
+                            d='flex'
+                            alignItems='center'
+                            isTruncated
+                          >
+                            <ListIcon as={CheckCircleIcon} color='teal.500' />
+                            {a}
+                          </ListItem>
+                        ) : null
+                      )}
+                    </List>
+                  </Box>
+                  <Box
+                    fontWeight='semibold'
+                    letterSpacing='wide'
+                    fontSize='xs'
+                    textTransform='uppercase'
+                    mt='2'
+                  >
+                    <List d='flex' alignItems='center'>
+                      {listing[id].bathroom.map(a =>
+                        a !== false ? (
+                          <ListItem
+                            mr='25px'
+                            d='flex'
+                            alignItems='center'
+                            isTruncated
+                          >
+                            <ListIcon as={CheckCircleIcon} color='teal.500' />
+                            {a}
+                          </ListItem>
+                        ) : null
+                      )}
+                    </List>
+                  </Box>
+                  <Box
+                    fontWeight='semibold'
+                    letterSpacing='wide'
+                    fontSize='xs'
+                    textTransform='uppercase'
+                    mt='2'
+                  >
+                    <List d='flex' alignItems='center'>
+                      {listing[id].general.map(a =>
+                        a !== false ? (
+                          <ListItem
+                            mr='25px'
+                            d='flex'
+                            alignItems='center'
+                            isTruncated
+                          >
+                            <ListIcon as={CheckCircleIcon} color='teal.500' />
+                            {a}
+                          </ListItem>
+                        ) : null
+                      )}
+                    </List>
+                  </Box>
+                  <Box
+                    fontWeight='semibold'
+                    letterSpacing='wide'
+                    fontSize='xs'
+                    textTransform='uppercase'
+                    mt='2'
+                    mb='20px'
+                  >
+                    <List d='flex' alignItems='center'>
+                      {listing[id].outside.map(a =>
+                        a !== false ? (
+                          <ListItem
+                            mr='25px'
+                            d='flex'
+                            alignItems='center'
+                            isTruncated
+                          >
+                            <ListIcon as={CheckCircleIcon} color='teal.500' />
+                            {a}
+                          </ListItem>
+                        ) : null
+                      )}
+                    </List>
+                  </Box>
+
+                  <Box fontSize='md' mt='5px'>
+                    Location: &nbsp; {listing[id].city},&nbsp;
+                    {listing[id].country}
+                  </Box>
+                  <Spacer />
+                  <Box>Dates available:&nbsp; {listing[id].dates}</Box>
+                  <Box>
+                    <Button
+                      as='span'
+                      mt={2}
+                      colorScheme='teal'
+                      fontSize='sm'
+                      size='sm'
+                      w='100%'
+                    >
+                      Contact Home Owner
+                    </Button>
+                  </Box>
+                </Flex>
+              </Flex>
+            </>
+          )
+        }
+      })}
     </Fragment>
   )
 }

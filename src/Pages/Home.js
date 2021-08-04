@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Stack, Heading } from '@chakra-ui/react'
-import ListingsList from '../Components/Listings/ListingsList'
+import List from '../Components/Listings/List'
 
 const Home = () => {
   return (
@@ -15,8 +15,7 @@ const Home = () => {
           </Heading>
         </Stack>
       </Flex>
-
-      <ListingsList />
+      <List />
     </div>
   )
 }

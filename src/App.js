@@ -5,14 +5,14 @@ import SubmitListing from './Components/Listings/SubmitListing'
 import Authentication from './Components/Profile/Authentication'
 import Home from './Pages/Home'
 import Layout from './Components/UI/Layout'
-import ListingsList from './Components/Listings/ListingsList'
+import List from './Components/Listings/List'
 import MyAccount from './Components/Profile/MyAccount'
 import { AuthProvider } from './Store/authContext'
 import PrivateRoute from './Components/Profile/PrivateRoute'
 import ForgottenPassword from './Components/Profile/ForgottenPassword'
 import Listing from './Pages/Listing'
 
-function App (props) {
+function App () {
   return (
     <AuthProvider>
       <div className='App'>
@@ -21,9 +21,9 @@ function App (props) {
           <Layout>
             <Route path='/authentication' component={Authentication} />
 
-            <Route path='/listings' component={ListingsList} />
+            <Route path='/listings' component={List} />
 
-            <PrivateRoute path='/submit-listing' component={SubmitListing}  />
+            <PrivateRoute path='/submit-listing' component={SubmitListing} />
             <Route path='/listing-detail/:id' component={Listing} />
 
             <PrivateRoute path='/my-account' component={MyAccount} />
