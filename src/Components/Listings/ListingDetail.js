@@ -72,8 +72,8 @@ const ListingDetail = () => {
                       fontSize='xs'
                       textTransform='uppercase'
                     >
-                      {data[id].beds} beds &bull; {data[id].baths} baths
-                      &bull; {data[id].toilets} toilets
+                      {data[id].beds} beds &bull; {data[id].baths} baths &bull;{' '}
+                      {data[id].toilets} toilets
                     </Box>
                   </Box>
                   <Box
