@@ -15,7 +15,6 @@
 ## About The Project
 
 
-
 ### Built With
 
 * []()React
@@ -24,19 +23,33 @@
 * []()React Query
 * []()React Hook Form
 
-
 ### Learned to use
-
 
 * []()React router
 * []()Firebase storage and realtime database
 * []()Integrating Firebase authentication
 * []()React hooks including custom hooks
 
+  <br/>
+  
+## Current Features
+* []()User sign up and login
+  * []()Restricted pages for guests
+  * []()Forgotten password option
+* []()Form to submit user listing with photo
+   * []()Various form inputs 
+   * []()Error & validation
+* []()Displays all listings on the home page
+   * []()Using React query to fetch data
+* []()Displays detail page with all listing details
+* []()Account page with email details and user listing
+   * []()Using user UID to map the data
+
+  
   
 ## Goals 
   
-* []()Edit & delete user listing
+* []()Edit & delete user listing and user details
 * []()Upload and display multiple photos for each listing
 * []()Add contact/chat feature
 * []()Add Google Map for each listing location 
