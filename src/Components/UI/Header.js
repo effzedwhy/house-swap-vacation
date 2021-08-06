@@ -39,7 +39,7 @@ const Header = () => {
         >
           <Box>
             <Text fontSize='2xl'>
-              <Link to='/home'>SwapHouse</Link>
+              <Link to='/home'>HouseSwap</Link>
             </Text>
           </Box>
           <Spacer />
