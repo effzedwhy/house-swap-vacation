@@ -25,8 +25,13 @@ const ListingsList = () => {
         {status !== 'success' && status}
         <Stack spacing={4}>
           <Heading as='h1'>Profile</Heading>
+          <hr />
           <Heading as='h2' size='md'>
             Your details
+          </Heading>
+
+          <Heading size='sm' as='h3'>
+            Email address:
           </Heading>
           <Text>{currentUser.email}</Text>
           <Heading as='h2' size='md'>
