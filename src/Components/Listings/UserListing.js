@@ -12,7 +12,7 @@ const UserListing = ({
   dates,
   data
 }) => {
-  const button = { label: 'Edit', link: './edit-my-listing' }
+  const button = { label: 'Edit', link: './edit-my-listing' + id }
 
   return (
     <Fragment>
