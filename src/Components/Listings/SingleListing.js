@@ -12,10 +12,9 @@ const SingleListing = props => {
     city,
     country,
     dates,
-    photos,
+    photo,
     data
   } = props
-
 
   const button = { label: 'More Details', link: '/listing-detail/' + id }
 
@@ -32,7 +31,7 @@ const SingleListing = props => {
         dates={dates}
         button={button}
         key={id}
-        photos={photos}
+        photos={photo}
         data={data}
       />
     </Fragment>

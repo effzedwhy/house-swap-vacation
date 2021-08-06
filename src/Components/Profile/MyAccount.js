@@ -21,7 +21,7 @@ const ListingsList = () => {
 
   return (
     <Fragment>
-      <Flex direction='column' align='left' m={10} ml='180px'>
+      <Flex direction='column' align='center' m={10}>
         {status !== 'success' && status}
         <Stack spacing={4}>
           <Heading as='h1'>Profile</Heading>
@@ -30,7 +30,7 @@ const ListingsList = () => {
           </Heading>
           <Text>{currentUser.email}</Text>
           <Heading as='h2' size='md'>
-            Your data
+            Your Listing
           </Heading>
           {id ? (
             <UserListing
