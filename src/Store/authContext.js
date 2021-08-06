@@ -14,11 +14,15 @@ export function AuthProvider ({ children }) {
 
   function signup (email, password) {
     setUid(auth.currentUser.uid)
-    return auth.createUserWithEmailAndPassword(email, password)
+    return auth
+      .createUserWithEmailAndPassword(email, password)
+      .catch(error => console.log(error.message))
   }
   function login (email, password) {
     setUid(auth.currentUser.uid)
-    return auth.signInWithEmailAndPassword(email, password)
+    return auth
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => console.log(error.message))
   }
 
   function logout () {
