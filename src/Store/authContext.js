@@ -13,16 +13,16 @@ export function AuthProvider ({ children }) {
   const [loading, setLoading] = useState(true)
 
   function signup (email, password) {
-    setUid(auth.currentUser.uid)
-    return auth
+    auth
       .createUserWithEmailAndPassword(email, password)
       .catch(error => console.log(error.message))
+    return Uid()
   }
   function login (email, password) {
-    setUid(auth.currentUser.uid)
-    return auth
+    auth
       .signInWithEmailAndPassword(email, password)
       .catch(error => console.log(error.message))
+    return Uid()
   }
 
   function logout () {
@@ -42,6 +42,9 @@ export function AuthProvider ({ children }) {
     return unsubscribe
   }, [])
 
+  function Uid () {
+    setUid(auth.currentUser.uid)
+  }
   const value = {
     currentUser,
     signup,
