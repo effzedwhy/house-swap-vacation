@@ -4,7 +4,6 @@ import SingleListing from './SingleListing'
 import { useAllData } from '../../Hooks/useData'
 import { useQuery } from 'react-query'
 
-
 const Listing = () => {
   const { isLoading, isError, data, error } = useQuery('alldata', useAllData)
 

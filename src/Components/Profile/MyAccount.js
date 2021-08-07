@@ -5,7 +5,7 @@ import { useAllData } from '../../Hooks/useData'
 import { useQuery } from 'react-query'
 import UserListing from '../Listings/UserListing'
 
-const ListingsList = () => {
+const MyAccount = () => {
   const { uid, currentUser } = useAuth()
   let id = ''
 
@@ -59,4 +59,4 @@ const ListingsList = () => {
   )
 }
 
-export default ListingsList
+export default MyAccount

@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import 'firebase/storage'
 import ListingCard from '../UI/ListingCard'
 
-const SingleListing = (data) => {
+const SingleListing = data => {
   const button = {
     label: 'More Details',
     link: `/listing-detail/${data.id}`
