@@ -8,7 +8,7 @@
    A platform where users can find a house to swap for a vacation. 
     <br />
     <br />
-    <a href="https://github.com/effzedwhy/house-swap-vacation">Demo coming soon..</a>
+    <a href="https://house-swap-vacation.netlify.app/">Demo link..</a>
       
   
 
