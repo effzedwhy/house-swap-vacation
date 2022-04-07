@@ -28,11 +28,10 @@ const SubmitListing = () => {
 
   const submitHandler = async data => {
     try {
-      console.log('start')
-      setIsLoading(true)
+       setIsLoading(true)
 
-      const photos = []
-      const file = document.getElementById('fileItem').files
+  const photos = []
+  const file = document.getElementById('fileItem').files
 
       for (let i = 0; i < file.length; i++) {
         const storageRef = Firebase.storage().ref()
@@ -63,8 +62,6 @@ const SubmitListing = () => {
           dates: data.dates,
           photo: photos
         })
-
-      console.log('done')
 
       setIsLoading(false)
       history.push('/my-account')
