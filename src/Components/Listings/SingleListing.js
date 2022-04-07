@@ -7,7 +7,6 @@ const SingleListing = data => {
     label: 'More Details',
     link: `/listing-detail/${data.id}`
   }
-  console.log(data)
   return (
     <Fragment>
       <ListingCard {...data} button={button} />
