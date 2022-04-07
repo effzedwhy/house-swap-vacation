@@ -50,6 +50,7 @@
 ## Goals 
   
 * []()Edit & delete user listing and user details
+* []()Show user authentication success/fail 
 * []()Upload and display multiple photos for each listing
 * []()Add contact/chat feature
 * []()Add Google Map for each listing location 
